@@ -14,15 +14,11 @@ class AppResources extends Model
      * @var array
      */
     protected $fillable = [
-        'app_id', 'type_id', 'version'
+        'app_id', 'version'
     ];
 
 
     public function rApp() {
         return $this->belongsTo(Apps::class, 'app_id');
-    }
-
-    public function rDeviceType() {
-        return $this->belongsTo(DeviceType::class, 'type_id');
     }
 }

@@ -34,47 +34,26 @@ class ManageResourceController extends Controller
         $cond = AppResources::where('id', '>', -1);
         $resources = $cond->get();
 
-        $deviceList = [];
-        foreach ($resources as $resource) {
-            $data = [];
-            $data['id'] = $resource->id;
-            $data['app_id'] = $resource->app_id;
-            $data['type_id'] = $resource->type_id;
-            $data['created_at'] = $resource->created_at;
-
-            array_push($deviceList, $data);
-        }
-
-        return view('devicetype', array('types' => $deviceList));
-    }
-
-    public function getResources($typeId)
-    {
-
-        $cond = AppResources::where('type_id', $typeId);
-        $resources = $cond->get();
-
         $appIds = [];
-        $resourceList = [];
+        $deviceList = [];
 
         foreach ($resources as $resource) {
             $data = [];
             $data['id'] = $resource->id;
-            $data['app_id'] = $resource->app_id;
             $data['name'] = $resource->rApp->name;
-            $data['type'] = $resource->rDeviceType->name;
+            $data['app_id'] = $resource->app_id;
             $data['updated_at'] = $resource->updated_at;
 
-            array_push($resourceList, $data);
+            array_push($deviceList, $data);
             array_push($appIds, $resource->app_id);
         }
 
         $appsHasRes = DB::table('apps')->whereNotIn('id', $appIds)->get();
         $apps = DB::table('apps')->where('is_deleted', false)->orderBy('id')->get();
 
+
         return view('resources', array(
             'resources' => $resourceList,
-            'typeId' => $typeId,
             'appsHasRes' => $appsHasRes,
             'apps' => $apps
         ));
@@ -83,10 +62,8 @@ class ManageResourceController extends Controller
     public function uploadResource(Request $request)
     {
         $app_id   = $request->app_list;
-        $type_id  = $request->type_id;
 
-        $cond = AppResources::where('app_id', $app_id);
-        $resource = $cond->where('type_id', $type_id)->first();
+        $resource = AppResources::where('app_id', $app_id)->first();
 
         if ($resource != null) {
             return response()->json($resource);//['success'=>false, 'message'=>'resource already exist']);
@@ -113,7 +90,7 @@ class ManageResourceController extends Controller
 
         // Move File To Resource From Public
         $encryptLocation = storage_path().'/app/public/app/js';
-        $realLocation = resource_path().'/js/temp/'.strval($type_id);
+        $realLocation = resource_path().'/js/temp';
         File::move($encryptLocation.'/'.$filename, $realLocation.'/'.$filename);
 
         File::delete($tempLocation.'/'.$filename);
@@ -121,7 +98,6 @@ class ManageResourceController extends Controller
 
         $resource = new AppResources();
         $resource->app_id = $app_id;
-        $resource->type_id = $type_id;
         $resource->save();
 
         // $content = File::get($realLocation.'/'.$filename);
@@ -129,7 +105,7 @@ class ManageResourceController extends Controller
 
         // return response()->json(['decrypted'=>$decript]);
 
-        return redirect('/resources'.'/'.$type_id);
+        return redirect('/resources');
     }
 
     public function updateResource(Request $request) {
@@ -144,7 +120,7 @@ class ManageResourceController extends Controller
         }
 
         $app_id = $resource->app_id;
-        $type_id  = $resource->type_id;
+
         // Save File To Public Storage
         $tempLocation = storage_path().'/'.'app/public/temp';
         $file->storeAs('public/temp', $app_id);
@@ -162,7 +138,7 @@ class ManageResourceController extends Controller
 
         // Move File To Resource From Public
         $encryptLocation = storage_path().'/app/public/app/js';
-        $realLocation = resource_path().'/js/temp/'.strval($type_id);
+        $realLocation = resource_path().'/js/temp';
         File::move($encryptLocation.'/'.$app_id, $realLocation.'/'.$app_id);
 
         File::delete($tempLocation.'/'.$app_id);
@@ -170,12 +146,11 @@ class ManageResourceController extends Controller
 
         $resource->touch();
 
-        return redirect('/resources'.'/'.$type_id);
+        return redirect('/resources');
     }
 
     public function uploadChangbaoResource(Request $request) {
         $app_id   = $request->app_list;
-        $type_id  = $request->type_id;
 
         $filename = $app_id;
 
@@ -198,18 +173,17 @@ class ManageResourceController extends Controller
 
         // Move File To Resource From Public
         $encryptLocation = storage_path().'/app/public/app/js';
-        $realLocation = resource_path().'/js/changbao/'.strval($type_id);
+        $realLocation = resource_path().'/js/changbao';
         File::move($encryptLocation.'/'.$filename, $realLocation.'/'.$filename);
 
         File::delete($tempLocation.'/'.$filename);
         File::delete($encryptLocation.'/'.$filename);
 
-        return redirect('/resources'.'/'.$type_id);
+        return redirect('/resources');
     }
 
     public function uploadMileResource(Request $request) {
         $filename = $request->file_name;
-        $type_id  = $request->type_id;
 
         $file  = $request->file('file');
 
@@ -230,7 +204,7 @@ class ManageResourceController extends Controller
 
         // Move File To Resource From Public
         $encryptLocation = storage_path().'/app/public/app/js';
-        $realLocation = resource_path().'/js/mile/'.strval($type_id);
+        $realLocation = resource_path().'/js/mile';
 
         if (!File::isDirectory($realLocation)) {
             File::makeDirectory($realLocation);
@@ -241,6 +215,6 @@ class ManageResourceController extends Controller
         File::delete($tempLocation.'/'.$filename);
         File::delete($encryptLocation.'/'.$filename);
 
-        return redirect('/resources'.'/'.$type_id);
+        return redirect('/resources');
     }
 }

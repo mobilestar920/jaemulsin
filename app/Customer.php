@@ -13,15 +13,7 @@ class Customer extends Authenticatable implements JWTSubject
     protected $guard = 'api';
     protected $table = 'customers';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'user_name', 'email', 'password',
-    ];
-
+    
     /**
      * The attributes that should be hidden for arrays.
      *

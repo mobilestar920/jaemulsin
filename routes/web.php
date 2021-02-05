@@ -31,8 +31,6 @@ Route::post('/newuser', 'AddUserController@addNewUser');
 // Device
 Route::get('/devices', 'ManageDeviceController@index')->name('devices');
 Route::get('/devices/{type}', 'ManageDeviceController@retrieveDeviceList')->name('devicesWithType');
-Route::get('/newdevice', 'AddDeviceController@index')->name('newdevice');
-Route::post('/newdevice', 'AddDeviceController@addNewDevice');
 
 // Device Type
 Route::get('/devicetypes', 'ManageDeviceTypeController@index')->name('devicetypes');

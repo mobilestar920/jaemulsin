@@ -32,63 +32,40 @@ class CustomerLoginController extends Controller
     public function register(UserRegisterRequest $request)
     {
         $phone = $request->phone;
-        $user_name   = $request->user_name;
-        $password    = $request->password;
-
-        $user = Customer::where('user_name', $user_name)->first();
-
-        if ($user != null) {
-            $response = ['success' => false, 'message' => '已经使用了用户名。'];
-            return response()->json($response);
-        }
-
-        $user = Customer::where('phone', $phone)->first();
-
-        if ($user != null) {
-            $response = ['success' => false, 'message' => '电话号码已被其他用户使用。'];
-            return response()->json($response);
-        }
-
         $imei = $request->device_uuid;
-        $device = Device::where('android_id', $imei)->first();
 
+        $device = Device::where('android_id', $imei)->first();
         if ($device == null) {
-            $response = ['success' => false, 'message' => '没有登记的手机。'];
-            return response()->json($response);
+            $device = new Device();
+            $device->android_id = $imei;
+            $device->save();
         } else if ($device->rCustomer != null) {
             $response = ['success' => false, 'message' => '手机已登录到其他账户。'];
             return response()->json($response);
         }
 
-        $user_count = Customer::where('id', '>', '-1')->count() + 1;
-        $str_length = 5;
-        $code = 'XCS' . substr("0000{$user_count}", -$str_length);
+        $user = Customer::where('phone', $phone)->first();
+        if ($user != null) {
+            $user->device_id = $device->id;
+            $user->save();
+        } else {
+            $user_count = Customer::where('id', '>', '-1')->count() + 1;
+            $str_length = 5;
+            $code = 'XCS' . substr("0000{$user_count}", -$str_length);
 
-        $user = new Customer();
-        $user->code = $code;
-        $user->user_name = $user_name;
-        $user->password = $password;
-        $user->email = $request->email;
-        $user->gender = $request->gender;
-        $user->device_id = $device->id;
-        $user->province = $request->province;
-        $user->city = $request->city;
-        $user->street = $request->street;
-        $user->address1 = $request->address1;
-        $user->address2 = $request->address2;
-        $user->phone = $request->phone;
-        $user->expire_at = Carbon::now()->addDays(30);
-
-        $user->save();
+            $user = new Customer();
+            $user->code = $code;
+            $user->device_id = $device->id;
+            $user->phone = $request->phone;
+            $user->expire_at = Carbon::now()->addDays(30);
+            $user->save();
+        }
 
         $token = JWTAuth::fromUser($user, ['exp' => Carbon::now()->addDays(7)->timestamp]);
 
         $data = [];
         $data['id'] = $user->id;
         $data['user_code'] = $user->code;
-        $data['user_name'] = $user->user_name;
-        $data['email'] = $user->email;
-        $data['gender'] = $user->gender;
 
         $device = $user->rDevice;
         $data['device_uuid'] = $device->imei;
@@ -148,12 +125,7 @@ class CustomerLoginController extends Controller
 
         $response = [];
 
-        $user_name   = $request->user_name;
-        $password    = $request->password;
-        $news_id    = $request->news_id;
-
-        $user = Customer::where('user_name', $user_name)->first();
-
+        $user = Customer::where('phone', $phone)->first();
         if ($user != null) {
             if ($user->is_blocked == true) {
                 return response()->json(['success' => false, 'message' => '账号已停止使用。请咨询管理员。']);
@@ -165,77 +137,67 @@ class CustomerLoginController extends Controller
                 return response()->json(['success' => false, 'message' => '使用期限已满。']);
             }
 
-            if ($password == $user->password) {
-
-                $imei = $request->device_uuid;
-                $device = Device::where('android_id', $imei)->first();
-
-                if ($device == null) {
-                    $response = ['success' => false, 'message' => '没有登记的手机。'];
-                    return response()->json($response);
-                } else if ($device->id != $user->device_id) {
-                    $response = ['success' => false, 'message' => '手机已登录到其他账户。'];
-                    return response()->json($response);
-                } else {
-                    $token = JWTAuth::fromUser($user, ['exp' => Carbon::now()->addDays(7)->timestamp]);
-
-                    $data = [];
-                    $data['id'] = $user->id;
-                    $data['user_code'] = $user->code;
-                    $data['user_name'] = $user->user_name;
-                    $data['email'] = $user->email;
-                    $data['gender'] = $user->gender;
-
-                    $device = $user->rDevice;
-                    $data['device_uuid'] = $device->imei;
-                    $data['phone'] = $user->phone;
-
-                    $data['updated_at'] = $user->updated_at;
-                    $data['expire_at'] = $user->expire_at;
-                    $data['note'] = $user->note;
-
-                    $datetime1 = new DateTime($user->expire_at);
-                    $datetime2 = new DateTime(Carbon::now());
-                    $interval = $datetime2->diff($datetime1);
-                    $days = $interval->format('%a'); //now do whatever you like with $days
-                    $data['remain_days'] = $days;
-
-                    $key = env('XCS_SECRET', 'LbGqH750ukm7g2fbWqzDbQ5L');
-                    $iv = env('XCS_IV', 'jefQJhKG');
-                    $ENCR_KEY = env('XCS_KEY', 'U8gU2JVDvWjUDIGFHwqHgFjz');
-
-                    $encrypt = openssl_encrypt($key, "des-ede3-cbc", $ENCR_KEY, OPENSSL_RAW_DATA, $iv);
-
-                    // Get Current App Status
-                    //
-                    $caishen = MyApps::where('id', '>', -1)->orderBy('version', 'desc')->first();
-                    if ($caishen == null) {
-                        return response()->json(['success' => false, 'message' => 'No version available for now']);
-                    }
-
-                    // Get Latest News
-                    //
-                    $condition = News::where('id', '>', -1);
-                    if ($news_id != null) {
-                        $condition = $condition->where('id', '>', $news_id);
-                    }
-
-                    $news = $condition->orderBy('created_at', 'desc')->first();
-
-                    $response['success'] = true;
-                    $response['token'] = $token;
-                    $response['user'] = $data;
-                    $response['version'] = $caishen;
-                    $response['signature'] = base64_encode($encrypt);
-
-                    if ($news != null) {
-                        $response['news'] = $news;
-                    }
-
-                    return response()->json($response);
-                }
+            $imei = $request->device_uuid;
+            $device = Device::where('android_id', $imei)->first();
+            if ($device == null) {
+                $response = ['success' => false, 'message' => '没有登记的手机。'];
+                return response()->json($response);
+            } else if ($device->id != $user->device_id) {
+                $response = ['success' => false, 'message' => '手机已登录到其他账户。'];
+                return response()->json($response);
             } else {
-                return response()->json(['success' => false, 'message' => '密码错了。请您再试一次。']);
+                $token = JWTAuth::fromUser($user, ['exp' => Carbon::now()->addDays(7)->timestamp]);
+
+                $data = [];
+                $data['id'] = $user->id;
+                $data['user_code'] = $user->code;
+
+                $device = $user->rDevice;
+                $data['device_uuid'] = $device->imei;
+                $data['phone'] = $user->phone;
+                $data['updated_at'] = $user->updated_at;
+                $data['expire_at'] = $user->expire_at;
+                $data['note'] = $user->note;
+
+                $datetime1 = new DateTime($user->expire_at);
+                $datetime2 = new DateTime(Carbon::now());
+                $interval = $datetime2->diff($datetime1);
+                $days = $interval->format('%a'); //now do whatever you like with $days
+                $data['remain_days'] = $days;
+
+                $key = env('XCS_SECRET', 'LbGqH750ukm7g2fbWqzDbQ5L');
+                $iv = env('XCS_IV', 'jefQJhKG');
+                $ENCR_KEY = env('XCS_KEY', 'U8gU2JVDvWjUDIGFHwqHgFjz');
+
+                $encrypt = openssl_encrypt($key, "des-ede3-cbc", $ENCR_KEY, OPENSSL_RAW_DATA, $iv);
+
+                // Get Current App Status
+                //
+                $caishen = MyApps::where('id', '>', -1)->orderBy('version', 'desc')->first();
+                if ($caishen == null) {
+                    return response()->json(['success' => false, 'message' => 'No version available for now']);
+                }
+
+                // Get Latest News
+                //
+                $condition = News::where('id', '>', -1);
+                if ($news_id != null) {
+                    $condition = $condition->where('id', '>', $news_id);
+                }
+
+                $news = $condition->orderBy('created_at', 'desc')->first();
+
+                $response['success'] = true;
+                $response['token'] = $token;
+                $response['user'] = $data;
+                $response['version'] = $caishen;
+                $response['signature'] = base64_encode($encrypt);
+
+                if ($news != null) {
+                    $response['news'] = $news;
+                }
+
+                return response()->json($response);
             }
         }
 

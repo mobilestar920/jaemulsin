@@ -37,14 +37,6 @@
 
             <!-- ### $Sidebar Menu ### -->
             <ul class="sidebar-menu scrollable pos-r">
-                <!-- <li class="nav-item mT-30 actived">
-                    <a class="sidebar-link" href="{{ url('/admin') }}">
-                        <span class="icon-holder">
-                            <i class="c-blue-500 ti-home"></i>
-                        </span>
-                        <span class="title">{{ Lang::get('localizedStr.side_dashboard') }}</span>
-                    </a>
-                </li> -->
                 <li class="nav-item">
                     <a class='sidebar-link' href="{{ url('/users') }}">
                         <span class="icon-holder">
@@ -54,15 +46,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class='sidebar-link' href="{{ url('/devices') }}">
-                        <span class="icon-holder">
-                            <i class="c-blue-500 ti-mobile"></i>
-                        </span>
-                        <span class="title">{{ Lang::get('localizedStr.side_devices') }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class='sidebar-link' href="{{ url('/devicetypes') }}">
+                    <a class='sidebar-link' href="{{ url('/resources') }}">
                         <span class="icon-holder">
                             <i class="c-blue-500 ti-file"></i>
                         </span>
@@ -159,7 +143,6 @@
                                     <thead>
                                         <tr>
                                             <th>Id</th>
-                                            <th>{{ Lang::get('localizedStr.device_type') }}</th>
                                             <th>{{ Lang::get('localizedStr.resource_app_name') }}</th>
                                             <th>{{ Lang::get('localizedStr.resource_update_date') }}</th>
                                             <th>{{ Lang::get('localizedStr.user_action') }}</th>
@@ -169,7 +152,6 @@
                                         @foreach($resources as $i=>$resource)
                                         <tr>
                                             <td>{{ $resource['app_id'] }}</td>
-                                            <td>{{ $resource['type'] }}</td>
                                             <td>{{ $resource['name'] }}</td>
                                             <td>{{ $resource['updated_at']}}</td>
                                             <td>
@@ -206,10 +188,6 @@
                         <div class="modal-body">
                             <form method="POST" action="{{ route('uploadResource') }}" enctype="multipart/form-data">
                                 @csrf
-                                <div class="form-group" style="visibility: hidden; max-height: 0px;">
-                                    <label class="fw-500" for="type_id">Id</label>
-                                    <input type="text" class="form-control" id="type_id" name="type_id" value="{{ $typeId }}">
-                                </div>
                                 <div class="form-group">
                                     <label for="app_list">{{ Lang::get('localizedStr.resource_choose_app') }}</label>
                                     <select id="app_list" name="app_list" class="form-control">
@@ -242,10 +220,6 @@
                         <div class="modal-body">
                             <form method="POST" action="{{ route('uploadChangbao') }}" enctype="multipart/form-data">
                                 @csrf
-                                <div class="form-group" style="visibility: hidden; max-height: 0px;">
-                                    <label class="fw-500" for="type_id">Id</label>
-                                    <input type="text" class="form-control" id="type_id" name="type_id" value="{{ $typeId }}">
-                                </div>
                                 <div class="form-group">
                                     <label for="app_list">{{ Lang::get('localizedStr.resource_choose_app') }}</label>
                                     <select id="app_list" name="app_list" class="form-control">
@@ -278,10 +252,6 @@
                         <div class="modal-body">
                             <form method="POST" action="{{ route('uploadResMile') }}" enctype="multipart/form-data">
                                 @csrf
-                                <div class="form-group" style="visibility: hidden; max-height: 0px;">
-                                    <label class="fw-500" for="type_id">Id</label>
-                                    <input type="text" class="form-control" id="type_id" name="type_id" value="{{ $typeId }}">
-                                </div>
                                 <div class="form-group">
                                     <label for="file_name">{{ Lang::get('localizedStr.resource_name') }}</label>
                                     <input type="text" class="form-control" id="file_name" name="file_name">

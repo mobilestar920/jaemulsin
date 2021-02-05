@@ -37,14 +37,6 @@
 
             <!-- ### $Sidebar Menu ### -->
             <ul class="sidebar-menu scrollable pos-r">
-                <!-- <li class="nav-item mT-30 actived">
-                    <a class="sidebar-link" href="{{ url('/admin') }}">
-                        <span class="icon-holder">
-                            <i class="c-blue-500 ti-home"></i>
-                        </span>
-                        <span class="title">{{ Lang::get('localizedStr.side_dashboard') }}</span>
-                    </a>
-                </li> -->
                 <li class="nav-item">
                     <a class='sidebar-link' href="{{ url('/users') }}">
                         <span class="icon-holder">
@@ -54,15 +46,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class='sidebar-link' href="{{ url('/devices') }}">
-                        <span class="icon-holder">
-                            <i class="c-blue-500 ti-mobile"></i>
-                        </span>
-                        <span class="title">{{ Lang::get('localizedStr.side_devices') }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class='sidebar-link' href="{{ url('/devicetypes') }}">
+                    <a class='sidebar-link' href="{{ url('/resources') }}">
                         <span class="icon-holder">
                             <i class="c-blue-500 ti-file"></i>
                         </span>

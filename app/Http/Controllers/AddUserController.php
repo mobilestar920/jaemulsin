@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Customer;
 use App\Device;
-use App\DeviceType;
 use Illuminate\Http\Request;
 
 class AddUserController extends Controller
@@ -30,18 +29,8 @@ class AddUserController extends Controller
     public function addNewUser(Request $request) {
 
         $phone = $request->phone;
-        $user_name   = $request->user_name;
-        $password    = $request->password;
-
-        $user = Customer::where('user_name', $user_name)->first();
-
-        if ($user != null) {
-            $response = ['success' => false, 'message' => 'Username has already taken by someone.'];
-            return response()->json($response);
-        }
 
         $user = Customer::where('phone', $phone)->first();
-
         if ($user != null) {
             $response = ['success' => false, 'message' => 'Your phone number has already taken by someone.'];
             return response()->json($response);
@@ -49,7 +38,6 @@ class AddUserController extends Controller
 
         $imei = $request->imei;
         $device = Device::where('imei', $imei)->first();
-
         if ($device == null) {
             $response = ['success' => false, 'message' => 'Device Not Exist.'];
             return response()->json($response);
@@ -61,18 +49,9 @@ class AddUserController extends Controller
 
         $newUser = new Customer();
         $newUser->code = $code;
-        $newUser->user_name = $user_name;
         $newUser->phone = $phone;
-        $newUser->password = $password;
-        $newUser->email = $request->email;
-        $newUser->gender = $request->gender;
         $newUser->note = $request->note;
-        $newUser->device_id = $device->id;
-        $newUser->province = $request->province;
-        $newUser->city = $request->city;
-        $newUser->street = $request->street;
-        $newUser->address1 = $request->address1;
-        $newUser->address2 = $request->address2;
+        $newUser->device_id = $device->id;;
         $newUser->expire_at = $request->end_date;
 
         $newUser->save();
