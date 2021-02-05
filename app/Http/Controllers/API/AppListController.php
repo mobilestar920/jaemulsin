@@ -1,17 +1,17 @@
 <?php
 
-namespace App\API\V1\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\AppResources;
 use App\Apps;
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller as BaseController;
 use App\MyApps;
 use App\News;
 use Carbon\Carbon;
 use Dingo\Api\Contract\Http\Request;
 use Dotenv\Result\Success;
 
-class AppListController extends Controller {
+class AppListController extends BaseController {
 
     /**
      * Get App List

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\API\V1\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\API\V1\Requests\UserRegisterRequest;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\UserRegisterRequest;
+use Illuminate\Routing\Controller as BaseController;
 use App\Customer;
 use App\Device;
 use App\MyApps;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use phpseclib\Crypt\RSA as Crypt_RSA;
 
-class CustomerLoginController extends Controller
+class CustomerLoginController extends BaseController
 {
 
 

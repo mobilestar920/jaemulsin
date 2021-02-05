@@ -35,7 +35,7 @@ class ManageResourceController extends Controller
         $resources = $cond->get();
 
         $appIds = [];
-        $deviceList = [];
+        $resourceList = [];
 
         foreach ($resources as $resource) {
             $data = [];
@@ -44,7 +44,7 @@ class ManageResourceController extends Controller
             $data['app_id'] = $resource->app_id;
             $data['updated_at'] = $resource->updated_at;
 
-            array_push($deviceList, $data);
+            array_push($resourceList, $data);
             array_push($appIds, $resource->app_id);
         }
 

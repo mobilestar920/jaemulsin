@@ -34,10 +34,7 @@ class ManageUserController extends Controller
             $data['id'] = $user->id;
             $data['user_code'] = $user->code;
             $data['phone'] = $user->phone;
-            
-            $device = $user->rDevice;
-            $data['imei'] = $device->imei;
-
+            $data['imei'] = $user->device_id;
             $data['updated_at'] = $user->updated_at;
             $data['expire_at'] = $user->expire_at;
             $data['note'] = $user->note;

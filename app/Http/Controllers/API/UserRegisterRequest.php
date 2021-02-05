@@ -1,6 +1,6 @@
 <?php
 
-namespace App\API\V1\Requests;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,8 +24,7 @@ class UserRegisterRequest extends FormRequest {
     public function rules()
     {
         return [
-            'user_name' => 'required',
-            'password' => 'required',
+            'phone' => 'required',
             'device_uuid' => 'required'
         ];
     }
