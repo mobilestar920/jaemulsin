@@ -14,6 +14,7 @@ class LanguagesController extends Controller
     {
         session(['applocale' => $lang]);
 
+
         return back();
     }
 }

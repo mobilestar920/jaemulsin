@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\AppResources;
-use App\Apps;
-use App\DeviceType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use laraveldes3\Des3 as DES3;
 
 class ManageResourceController extends Controller
 {
@@ -36,12 +32,11 @@ class ManageResourceController extends Controller
 
         $appIds = [];
         $resourceList = [];
-
         foreach ($resources as $resource) {
             $data = [];
             $data['id'] = $resource->id;
-            $data['name'] = $resource->rApp->name;
             $data['app_id'] = $resource->app_id;
+            $data['name'] = $resource->rApp->name;
             $data['updated_at'] = $resource->updated_at;
 
             array_push($resourceList, $data);
@@ -51,9 +46,40 @@ class ManageResourceController extends Controller
         $appsHasRes = DB::table('apps')->whereNotIn('id', $appIds)->get();
         $apps = DB::table('apps')->where('is_deleted', false)->orderBy('id')->get();
 
+        return view('resources', array(
+            'resources' => $resourceList,
+            'appsHasRes' => $appsHasRes,
+            'apps' => $apps
+        ));
+    }
+
+    public function getResources($typeId)
+    {
+
+        $cond = AppResources::where('type_id', $typeId);
+        $resources = $cond->get();
+
+        $appIds = [];
+        $resourceList = [];
+
+        foreach ($resources as $resource) {
+            $data = [];
+            $data['id'] = $resource->id;
+            $data['app_id'] = $resource->app_id;
+            $data['name'] = $resource->rApp->name;
+            $data['type'] = $resource->rDeviceType->name;
+            $data['updated_at'] = $resource->updated_at;
+
+            array_push($resourceList, $data);
+            array_push($appIds, $resource->app_id);
+        }
+
+        $appsHasRes = DB::table('apps')->whereNotIn('id', $appIds)->get();
+        $apps = DB::table('apps')->where('is_deleted', false)->orderBy('id')->get();
 
         return view('resources', array(
             'resources' => $resourceList,
+            'typeId' => $typeId,
             'appsHasRes' => $appsHasRes,
             'apps' => $apps
         ));
@@ -120,7 +146,6 @@ class ManageResourceController extends Controller
         }
 
         $app_id = $resource->app_id;
-
         // Save File To Public Storage
         $tempLocation = storage_path().'/'.'app/public/temp';
         $file->storeAs('public/temp', $app_id);

@@ -13,7 +13,15 @@ class Customer extends Authenticatable implements JWTSubject
     protected $guard = 'api';
     protected $table = 'customers';
 
-    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'phone', 'device_id',
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -33,10 +41,6 @@ class Customer extends Authenticatable implements JWTSubject
     ];
 
     
-    public function rDevice() {
-        return $this->belongsTo(Device::class, 'device_id');
-    }
-
     public function getJWTIdentifier() {
         return $this->getKey();
     }

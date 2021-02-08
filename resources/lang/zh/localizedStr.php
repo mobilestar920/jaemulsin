@@ -17,7 +17,7 @@ return [
     'user_name' => '用户名',
     'user_email' => '电子邮件',
     'user_password' => '密码',
-    'user_gender' => '性别',
+    'user_phone' => '手机号吗',
     'user_device' => '手机 IMEI',
     'user_start' => '开始日期',
     'user_expire' => '结束日期',

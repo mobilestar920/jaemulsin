@@ -147,19 +147,13 @@
                             <form method="POST" action="{{ route('newuser') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-6">
                                         <label for="phone">{{ Lang::get('localizedStr.user_phone') }}</label>
                                         <input type="text" class="form-control" id="phone" name="phone" placeholder="1234567890">
                                     </div>
-                                </div>
-                                <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="imei">{{ Lang::get('localizedStr.user_device') }}</label>
                                         <input type="text" class="form-control" id="imei" name="imei" placeholder="IMEI">
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="end_date">{{ Lang::get('localizedStr.user_expire') }}</label>
-                                        <input type="date" class="form-control" id="end_date" name="end_date">
                                     </div>
                                 </div>
                                 <div class="form-group">

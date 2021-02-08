@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\API\V1\Controllers;
 
 use App\AppResources;
 use App\Apps;
-use Illuminate\Routing\Controller as BaseController;
+use App\Http\Controllers\Controller;
 use App\MyApps;
 use App\News;
 use Carbon\Carbon;
 use Dingo\Api\Contract\Http\Request;
 use Dotenv\Result\Success;
 
-class AppListController extends BaseController {
+class AppListController extends Controller {
 
     /**
      * Get App List
@@ -40,8 +40,7 @@ class AppListController extends BaseController {
 
         $appIds = [];
         foreach ($apps as $i => $app) {
-            $cond = AppResources::where('app_id', $app->id);
-            $resource = $cond->where('type_id', $user->rDevice->type_id)->first();
+            $resource = AppResources::where('app_id', $app->id)->first();
             $appResource = [];
             $appResource['app_id'] = $app->id;
             
@@ -85,7 +84,7 @@ class AppListController extends BaseController {
         }
 
         $fileName = strval($id);
-        $filePath = resource_path().'/'.'js/temp/'.strval($device->type_id).'/'.$fileName;
+        $filePath = resource_path().'/'.'js/temp/'.$fileName;
         return response()->download($filePath, $fileName); 
     }
 
@@ -98,7 +97,7 @@ class AppListController extends BaseController {
         }
 
         $fileName = strval($id);
-        $filePath = resource_path().'/'.'js/changbao/'.strval($device->type_id).'/'.$fileName;
+        $filePath = resource_path().'/'.'js/changbao/'.$fileName;
         return response()->download($filePath, $fileName); 
     }
 
@@ -107,6 +106,19 @@ class AppListController extends BaseController {
         
         if ($app != null) {
             $fileName = strval($id).'.apk';
+            $filePath = resource_path().'/'.'caishen/'.$fileName;
+
+            return response()->download($filePath, $fileName);     
+        } else {
+            return response()->json(['success'=>false, 'message'=>'下载的应用不存在。']);
+        }
+    }
+
+    public function caishenFreeDownload() {
+        $app = MyApps::where('id','>', -1)->orderBy('created_at', 'desc')->first();
+        
+        if ($app != null) {
+            $fileName = strval($app->id).'.apk';
             $filePath = resource_path().'/'.'caishen/'.$fileName;
 
             return response()->download($filePath, $fileName);     
@@ -135,7 +147,7 @@ class AppListController extends BaseController {
         }
 
         $fileName = strval($id);
-        $filePath = resource_path().'/'.'js/mile/'.strval($device->type_id).'/'.$fileName;
+        $filePath = resource_path().'/'.'js/mile/'.$fileName;
         return response()->download($filePath, $fileName); 
     }
 

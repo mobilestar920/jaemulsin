@@ -18,7 +18,7 @@ return [
     'user_name' => 'Username',
     'user_email' => 'Email',
     'user_password' => 'Password',
-    'user_gender' => 'Gender',
+    'user_phone' => 'Phone Number',
     'user_device' => 'Deivce IMEI',
     'user_start' => 'Start Date',
     'user_expire' => 'Expire Date',

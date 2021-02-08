@@ -55,7 +55,7 @@ html {
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.548);
 }
 
 article,
@@ -6274,11 +6274,11 @@ a.close.disabled {
   z-index: 1040;
   width: 100vw;
   height: 100vh;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .modal-backdrop.fade {
-  opacity: 0;
+  opacity: 0.5;
 }
 
 .modal-backdrop.show {
@@ -11232,6 +11232,10 @@ hr {
   width: 100%;
 }
 
+.sidebar-menu > li.dropdown ul.dropdown-menu .collapse .in {
+  display: block;
+}
+
 .sidebar-menu > li.dropdown ul.dropdown-menu > li > a {
   display: block;
   padding: 10px 15px;
@@ -11401,6 +11405,16 @@ hr {
 
 .header .header-container .nav-left > li > a,
 .header .header-container .nav-right > li > a {
+  color: #72777a;
+  display: block;
+  line-height: 65px;
+  min-height: 65px;
+  padding: 0 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+.header .header-container .nav-left > li > span,
+.header .header-container .nav-right > li > span {
   color: #72777a;
   display: block;
   line-height: 65px;

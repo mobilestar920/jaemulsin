@@ -28,12 +28,21 @@ Route::post('/user/block', 'ManageUserController@blockUser')->name('blockUser');
 Route::get('/newuser', 'AddUserController@index')->name('newuser');
 Route::post('/newuser', 'AddUserController@addNewUser');
 
+// Device
+Route::get('/devices', 'ManageDeviceController@index')->name('devices');
+Route::get('/devices/{type}', 'ManageDeviceController@retrieveDeviceList')->name('devicesWithType');
+Route::get('/newdevice', 'AddDeviceController@index')->name('newdevice');
+Route::post('/newdevice', 'AddDeviceController@addNewDevice');
+
 // Device Type
-Route::get('/resources', 'ManageResourceController@index')->name('getresources');
+Route::get('/resources', 'ManageResourceController@index')->name('resources');
+Route::get('/resources/{typeId}', 'ManageResourceController@getResources')->name('getresources');
+Route::post('/type/add', 'ManageDeviceTypeController@addNewDeviceType')->name('addNewDeviceType');
 Route::post('/resource/upload', 'ManageResourceController@uploadResource')->name('uploadResource');
 Route::post('/resource/mile', 'ManageResourceController@uploadMileResource')->name('uploadResMile');
 Route::post('/resource/changbao', 'ManageResourceController@uploadChangbaoResource')->name('uploadChangbao');
 Route::post('/resource/update', 'ManageResourceController@updateResource')->name('updateResource');
+
 
 // App
 Route::get('/apps', 'ManageAppController@index')->name('apps');
