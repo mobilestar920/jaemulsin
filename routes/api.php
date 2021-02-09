@@ -28,7 +28,7 @@ $api->version('v1', function (Router $api) {
         $api->get('apps/ids', 'App\\API\\V1\\Controllers\\AppListController@downloadableAppIds');
         $api->get('me/{id}', 'App\\API\\V1\\Controllers\\AppListController@caishenDownload');
         $api->get('news/latest', 'App\\API\\V1\\Controllers\\AppListController@getLatestNews');
-        $api->get('me/login/status', 'App\\API\\V1\\Controllers\\AppListController@userAvailable');
+        $api->post('me/login/status', 'App\\API\\V1\\Controllers\\AppListController@userAvailable');
     });
 
     $api->group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'app'], function(Router $api) {

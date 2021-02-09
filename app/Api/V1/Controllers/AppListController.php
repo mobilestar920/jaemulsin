@@ -9,7 +9,6 @@ use App\MyApps;
 use App\News;
 use Carbon\Carbon;
 use Dingo\Api\Contract\Http\Request;
-use Dotenv\Result\Success;
 
 class AppListController extends Controller {
 
@@ -151,8 +150,13 @@ class AppListController extends Controller {
         return response()->download($filePath, $fileName); 
     }
 
-    public function userAvailable() {
+    public function userAvailable(Request $request) {
         $user = auth()->user();
+        $device_uuid = $request->device_uuid;
+
+        if ($user->device_id != $device_uuid) {
+            return response()->json(['success' => false, 'message' => $user->deivce_id]);//'电话号码已被其他用户使用。']);
+        }
 
         $expire_date = $user->expire_at;
         $current = new Carbon;
