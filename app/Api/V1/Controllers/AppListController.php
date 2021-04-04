@@ -76,25 +76,14 @@ class AppListController extends Controller {
 
     public function resourceDownload($id) {
         $user = auth()->user();
-        $device = $user->rDevice;
         
-        if ($device == null) {
-            return response()->json(['success'=>false, 'message'=>'手机没有登记。请咨询管理员。']);
-        }
-
         $fileName = strval($id);
         $filePath = resource_path().'/'.'js/temp/'.$fileName;
         return response()->download($filePath, $fileName); 
     }
 
     public function changbaoDownload($id) {
-        $user = auth()->user();
-        $device = $user->rDevice;
-        
-        if ($device == null) {
-            return response()->json(['success'=>false, 'message'=>'手机没有登记。请咨询管理员。']);
-        }
-
+        $user = auth()->user();        
         $fileName = strval($id);
         $filePath = resource_path().'/'.'js/changbao/'.$fileName;
         return response()->download($filePath, $fileName); 
@@ -155,7 +144,7 @@ class AppListController extends Controller {
         $device_uuid = $request->device_uuid;
 
         if ($user->device_id != $device_uuid) {
-            return response()->json(['success' => false, 'message' => $user->deivce_id]);//'电话号码已被其他用户使用。']);
+            return response()->json(['success' => false, 'message' => '你得账号已被其他用户使用。']);
         }
 
         $expire_date = $user->expire_at;

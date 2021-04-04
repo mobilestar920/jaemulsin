@@ -142,7 +142,7 @@
                         <div class="col-md-12">
                             <div class="bgc-white bd bdrs-3 p-20 mB-20">
                                 <form style="display: flex">
-                                    <h4 class="c-grey-900 mB-20" style="flex: 1 1 auto;">{{ Lang::get('localizedStr.resource_list') }}</h4>
+                                    <h4 class="c-grey-900 mB-20" style="flex: 1 1 auto;"></h4>
                                     <button class="btn btn-danger" type="button" style="margin-bottom: 20px !important; margin-right: 20px;" id="btn_mile_resource">{{ Lang::get('localizedStr.resource_mile') }}</button>
                                     <button class="btn btn-danger" type="button" style="margin-bottom: 20px !important; margin-right: 20px;" id="btn_chang_resource">{{ Lang::get('localizedStr.resource_changbao') }}</button>                        
                                     <button class="btn btn-danger" type="button" style="margin-bottom: 20px !important;" id="btn_new_resource">{{ Lang::get('localizedStr.resource_new') }}</button>

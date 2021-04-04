@@ -23,7 +23,7 @@ $api->version('v1', function (Router $api) {
         $api->post('login/customer', 'App\\API\\V1\\Controllers\\CustomerLoginController@login');
     });
 
-    $api->group(['middleware' => ['assign.guard:api', 'jwt.auth']], function(Router $api) {
+    $api->group(['middleware' => "api"], function(Router $api) {
         $api->get('apps', 'App\\API\\V1\\Controllers\\AppListController@index');
         $api->get('apps/ids', 'App\\API\\V1\\Controllers\\AppListController@downloadableAppIds');
         $api->get('me/{id}', 'App\\API\\V1\\Controllers\\AppListController@caishenDownload');
