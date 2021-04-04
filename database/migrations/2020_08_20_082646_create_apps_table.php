@@ -15,11 +15,12 @@ class CreateAppsTable extends Migration
     {
         Schema::create('apps', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('package_name')->unique();
+            $table->string('name', 100)->unique();
+            $table->string('package_name', 100)->unique();
             $table->string('version');
             $table->integer('num_download')->default(0);
             $table->boolean('is_deleted')->default(false);
+            $table->text('download_url')->nullable();
             $table->timestamps();
         });
     }

@@ -16,7 +16,6 @@ class CreateAppResourcesTable extends Migration
         Schema::create('app_resources', function (Blueprint $table) {
             $table->id();
             $table->integer('app_id');
-            $table->integer('type_id');
             $table->timestamps();
         });
     }

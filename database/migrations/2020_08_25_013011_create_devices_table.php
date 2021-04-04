@@ -15,9 +15,9 @@ class CreateDevicesTable extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
-            $table->string('imei')->unique();
-            $table->string('android_id')->unique();
-            $table->integer('type_id');
+            $table->string('imei', 50)->unique();
+            $table->string('android_id', 50)->unique();
+            $table->integer('type_id')->nullable();
             $table->timestamps();
         });
     }
