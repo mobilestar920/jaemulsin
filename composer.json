@@ -17,7 +17,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "phpseclib/phpseclib": "^2.0",
-        "tymon/jwt-auth": "1.0.*",
+        "tymon/jwt-auth": "^1.0",
         "youthage/laravel-3des": "^4.0"
     },
     "require-dev": {
