@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Customer;
-use App\Http\Controllers\API\V1\Requests\UserRegisterRequest;
+use App\Http\Controllers\Api\V1\Requests\UserRegisterRequest;
 use App\MyApps;
 use App\News;
 use App\User;
