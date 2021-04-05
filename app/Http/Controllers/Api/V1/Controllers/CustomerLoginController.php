@@ -1,10 +1,10 @@
 <?php
 
-namespace App\API\V1\Controllers;
+namespace App\Http\Controllers\API\V1\Controllers;
 
-use App\API\V1\Requests\UserRegisterRequest;
 use App\Http\Controllers\Controller;
 use App\Customer;
+use App\Http\Controllers\API\V1\Requests\UserRegisterRequest;
 use App\MyApps;
 use App\News;
 use App\User;

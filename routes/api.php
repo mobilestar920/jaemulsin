@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Dingo\Api\Routing\Router;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,31 +12,27 @@ use Dingo\Api\Routing\Router;
 |
 */
 
-$api = app(Router::class);
+Route::group(['prefix' => 'v1/auth'], function($router) {
+    Route::post('register/customer', 'API\\V1\\Controllers\\CustomerLoginController@register');
+    Route::post('login/customer', 'API\\V1\\Controllers\\CustomerLoginController@login');
+});
 
-$api->version('v1', function (Router $api) {
+Route::group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'v1'], function($router) {
+    Route::get('apps', 'API\\V1\\Controllers\\AppListController@index');
+    Route::get('apps/ids', 'API\\V1\\Controllers\\AppListController@downloadableAppIds');
+    Route::get('me/{id}', 'API\\V1\\Controllers\\AppListController@caishenDownload');
+    Route::get('news/latest', 'API\\V1\\Controllers\\AppListController@getLatestNews');
+    Route::post('me/login/status', 'API\\V1\\Controllers\\AppListController@userAvailable');
+});
 
-    $api->group(['prefix' => 'auth'], function(Router $api) {
-        $api->post('register/customer', 'App\\API\\V1\\Controllers\\CustomerLoginController@register');
-        $api->post('login/customer', 'App\\API\\V1\\Controllers\\CustomerLoginController@login');
-    });
 
-    $api->group(['middleware' => ['assign.guard:api', 'jwt.auth']], function(Router $api) {
-        $api->get('apps', 'App\\API\\V1\\Controllers\\AppListController@index');
-        $api->get('apps/ids', 'App\\API\\V1\\Controllers\\AppListController@downloadableAppIds');
-        $api->get('me/{id}', 'App\\API\\V1\\Controllers\\AppListController@caishenDownload');
-        $api->get('news/latest', 'App\\API\\V1\\Controllers\\AppListController@getLatestNews');
-        $api->post('me/login/status', 'App\\API\\V1\\Controllers\\AppListController@userAvailable');
-    });
+Route::group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'app'], function($router) {
+    Route::get('download/{id}', 'API\\V1\\Controllers\\AppListController@download');
+    Route::get('resource/{id}', 'API\\V1\\Controllers\\AppListController@resourceDownload');
+    Route::get('mile/{id}', 'API\\V1\\Controllers\\AppListController@getMileResource');
+    Route::get('changbao/{id}', 'API\\V1\\Controllers\\AppListController@changbaoDownload');
+});
 
-    $api->group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'app'], function(Router $api) {
-        $api->get('download/{id}', 'App\\API\\V1\\Controllers\\AppListController@download');
-        $api->get('resource/{id}', 'App\\API\\V1\\Controllers\\AppListController@resourceDownload');
-        $api->get('mile/{id}', 'App\\API\\V1\\Controllers\\AppListController@getMileResource');
-        $api->get('changbao/{id}', 'App\\API\\V1\\Controllers\\AppListController@changbaoDownload');
-    });
-    
-    $api->group(['prefix' => 'download'], function(Router $api) {
-        $api->get('caishen/latest', 'App\\API\\V1\\Controllers\\AppListController@caishenFreeDownload');
-    });
+Route::group(['prefix' => 'download'], function($router) {
+    Route::get('caishen/latest', 'API\\V1\\Controllers\\AppListController@caishenFreeDownload');
 });
