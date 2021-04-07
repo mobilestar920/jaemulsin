@@ -45,7 +45,7 @@ class CustomerLoginController extends Controller
         $user->code = $code;
         $user->device_id = $imei;
         $user->phone = $request->phone;
-        $user->expire_at = Carbon::now()->addDays(30);
+        $user->expire_at = Carbon::now()->addDays(2);
         $user->save();
 
         $token = JWTAuth::fromUser($user, ['exp' => Carbon::now()->addDays(7)->timestamp]);
@@ -140,7 +140,7 @@ class CustomerLoginController extends Controller
             $user = new Customer();
             $user->code = $code;
             $user->phone = $phone;
-            $user->expire_at = Carbon::now()->addDays(30);
+            $user->expire_at = Carbon::now()->addDays(2);
         }
 
         $user->device_id = $imei;
