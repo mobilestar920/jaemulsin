@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\MyApps;
 use App\News;
 use Carbon\Carbon;
-use Dingo\Api\Contract\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class AppListController extends Controller {
 
