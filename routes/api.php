@@ -26,7 +26,7 @@ Route::group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'v1'
 });
 
 
-Route::group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'app'], function($router) {
+Route::group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'v1/app'], function($router) {
     Route::get('download/{id}', 'Api\\V1\\Controllers\\AppListController@download');
     Route::get('resource/{id}', 'Api\\V1\\Controllers\\AppListController@resourceDownload');
     Route::get('mile/{id}', 'Api\\V1\\Controllers\\AppListController@getMileResource');
