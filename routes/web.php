@@ -21,6 +21,13 @@ Auth::routes();
 
 Route::get('/admin', 'AdminController@index')->name('admin');
 
+// Seller
+Route::get('/sellers', 'ManageSellerController@index')->name('sellers');
+Route::post('/user/expand', 'ManageUserController@expandLicence')->name('expandLicence');
+Route::post('/user/block', 'ManageUserController@blockUser')->name('blockUser');
+Route::get('/newuser', 'AddUserController@index')->name('newuser');
+Route::post('/newuser', 'AddUserController@addNewUser');
+
 // Customer
 Route::get('/users', 'ManageUserController@index')->name('users');
 Route::post('/user/expand', 'ManageUserController@expandLicence')->name('expandLicence');

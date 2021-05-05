@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('head')
-<!-- <script src="{{ asset('js/user.js') }}"></script> -->
+<script src="{{ asset('js/user.js') }}"></script>
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
                             <div class="peers ai-c fxw-nw">
                                 <div class="peer">
                                     <div class="logo">
-                                        <img src="assets/static/images/logo.png" alt="">
+                                        <img src="{{ asset('images/logo.png') }}" alt="">
                                     </div>
                                 </div>
                                 <div class="peer peer-greed">
@@ -54,15 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class='sidebar-link' href="{{ url('/devices') }}">
-                        <span class="icon-holder">
-                            <i class="c-blue-500 ti-mobile"></i>
-                        </span>
-                        <span class="title">{{ Lang::get('localizedStr.side_devices') }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class='sidebar-link' href="{{ url('/devicetypes') }}">
+                    <a class='sidebar-link' href="{{ url('/resources') }}">
                         <span class="icon-holder">
                             <i class="c-blue-500 ti-file"></i>
                         </span>
@@ -102,12 +94,24 @@
             <div class="header-container">
                 <ul class="nav-left">
                     <li>
-                        <a id='sidebar-toggle' class="sidebar-toggle" href="javascript:void(0);">
+                        <span id='sidebar-toggle' class="sidebar-toggle">
                             <i class="ti-menu"></i>
-                        </a>
+                        </span>
                     </li>
                 </ul>
                 <ul class="nav-right">
+                    <li>
+                        @if( App::getLocale() == 'zh' )
+                        <a href="{{ route('changeLanguage', 'en') }}" id='lang_toggle' class="sidebar-toggle">
+                            <img class="w-2r bdrs-50p" src="{{ asset('images/uk_us.svg') }}" alt="">
+                        </a>
+                        @else
+                        <a href="{{ route('changeLanguage', 'zh') }}" id='lang_toggle' class="sidebar-toggle">
+                            <img class="w-2r bdrs-50p" src="{{ asset('images/zh_cn.svg') }}" alt="">
+                        </a>
+                        @endif
+
+                    </li>
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
                             <div class="peer mR-10">
@@ -133,37 +137,34 @@
         <main class='main-content bgc-grey-100'>
             <div id='mainContent'>
                 <div class="container-fluid">
-                    <h4 class="c-grey-900 mT-10 mB-30">News Management</h4>
+                    <h4 class="c-grey-900 mT-10 mB-30">{{ Lang::get('localizedStr.title_seller_manage') }}</h4>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="bgc-white bd bdrs-3 p-20 mB-20">
                                 <form style="display: flex">
-                                    <h4 class="c-grey-900 mB-20" style="flex: 1 1 auto;">News</h4>
-                                    <button class="btn btn-danger" type="submit" formaction="{{ route('newuser') }}" style="margin-bottom: 20px !important;">Add News</button>
+                                    <h4 class="c-grey-900 mB-20" style="flex: 1 1 auto;">{{ Lang::get('localizedStr.seller_list') }}</h4>
+                                    <button class="btn btn-danger" type="submit" formaction="{{ route('newuser') }}" style="margin-bottom: 20px !important;">{{ Lang::get('localizedStr.user_register') }}</button>
                                 </form>
-                                <table id="dataTable" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                                <table id="dataTable" class="table table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Content</th>
-                                            <th>Date</th>
-                                            <th>Action</th>
+                                            <th>No</th>
+                                            <th>{{ Lang::get('localizedStr.seller_name') }}</th>
+                                            <th>{{ Lang::get('localizedStr.user_email') }}</th>
+                                            <th>{{ Lang::get('localizedStr.user_start') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($newsList as $i=>$news)
+                                        @foreach($users as $i=>$user)
                                         <tr>
-                                            <td>{{ $news->title }}</td>
-                                            <td> {{ $news->body }} </td>
-                                            <td>{{ $news->created_at }}</td>
+                                            <td>{{ $user['name'] }}</td>
+                                            <td>{{ $user['email'] }}</td>
+                                            <td>{{ $user['created_at'] }}</td>
                                             <td>
                                                 <div class="peers mR-15">
                                                     <div class="peer">
-                                                        <span id="edit_user" class="td-n c-deep-purple-500 cH-blue-500 fsz-md p-5" data-userId="{{ strval($user['id']) }}">
-                                                            <i class="ti-pencil"></i>
-                                                        </span>
                                                         <span id="block_user" class="td-n c-pink-500 cH-blue-500 fsz-md p-5" data-userId="{{ strval($user['id']) }}">
-                                                            <i class="ti-delete"></i>
+                                                            <i class="ti-na"></i>
                                                         </span>
                                                     </div>
 
@@ -206,39 +207,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="modal" id="news_edit">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="bd p-15">
-                                    <h5 class="m-0">Edit News</h5>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="POST" action="{{ route('expandLicence') }}" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="form-group" style="visibility: hidden; max-height: 0px;">
-                                            <label class="fw-500" for='user_edit_id'>news_id</label>
-                                            <input type="text" class="form-control" id="news_eidt_id" name="news_eidt_id" placeholder="News ID">
-                                        </div>
-                                        <div class="row" style="margin-bottom: 20px;">
-                                            <div class="col-md-6">
-                                                <label class="fw-500">Title</label>
-                                                <input type="text" class="form-control" id="news_title" name="news_title">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="fw-500">Body</label>
-                                            <textarea class="form-control bdc-grey-200" rows='5' id="news_body" name="news_body"></textarea>
-                                        </div>
-                                        <div class="text-right">
-                                            <button class="btn btn-primary cur-p" id="btn_update" type="submit">Done</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </main>

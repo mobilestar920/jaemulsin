@@ -9,6 +9,7 @@ return [
     'side_apps' => "应用管理",
     'side_my_app' => "我的应用",
     'side_news' => '消息管理',
+    'side_sellers' => 'Sellers',
 
 
     'title_user_manage' => '用户管理',
@@ -36,6 +37,11 @@ return [
     'choose_option' => '请选择 ...',
     'gender_male' => '男',
     'gender_female' => '女',
+
+    // Seller Management
+    'title_seller_manage' => 'Seller Management',
+    'seller_list' => 'Seller List',
+    'seller_name' => 'Name',
 
     // Device Management
     'title_device_manage' => '手机管理',

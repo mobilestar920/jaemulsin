@@ -33,14 +33,14 @@
 
             <!-- ### $Sidebar Menu ### -->
             <ul class="sidebar-menu scrollable pos-r">
-                <!-- <li class="nav-item mT-30 actived">
-                    <a class="sidebar-link" href="{{ url('/admin') }}">
+                <li class="nav-item mT-30 actived">
+                    <a class="sidebar-link" href="{{ url('/sellers') }}">
                         <span class="icon-holder">
                             <i class="c-blue-500 ti-home"></i>
                         </span>
-                        <span class="title">{{ Lang::get('localizedStr.side_dashboard') }}</span>
+                        <span class="title">{{ Lang::get('localizedStr.side_sellers') }}</span>
                     </a>
-                </li> -->
+                </li>
                 <li class="nav-item">
                     <a class='sidebar-link' href="{{ url('/users') }}">
                         <span class="icon-holder">

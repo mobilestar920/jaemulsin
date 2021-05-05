@@ -10,6 +10,9 @@ return [
     'side_apps' => "Apps",
     'side_my_app' => "My App",
     'side_news' => 'News',
+    'side_sellers' => 'Sellers',
+
+
 
     // User Management
     'title_user_manage' => 'User Management',
@@ -37,6 +40,11 @@ return [
     'choose_option' => 'Choose ...',
     'gender_male' => 'Male',
     'gender_female' => 'Female',
+
+    // Seller Management
+    'title_seller_manage' => 'Seller Management',
+    'seller_list' => 'Seller List',
+    'seller_name' => 'Name',
 
     // Device Management
     'title_device_manage' => 'Device Management',
