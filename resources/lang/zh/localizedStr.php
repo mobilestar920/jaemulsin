@@ -87,4 +87,14 @@ return [
     'title_our_app' => '我的应用',
     'app_history' => '版本履历',
     'app_new_version' => '新版本',
+
+    // Verification Code Manage
+    'title_selling_status' => 'Selling Status',
+    'code_type' => 'Type',
+    'seven_days' => '7 Days',
+    'half_month' => '15 Days',
+    'one_month' => '30 Days',
+    'total_amount' => 'Total',
+    'selled_amount' => 'Selled',
+    'verification_code' => 'Code'
 ];

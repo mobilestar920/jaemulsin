@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Http\Middleware\Authenticate;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -10,42 +12,33 @@ class Customer extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    protected $guard = 'api';
-    protected $table = 'customers';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'phone', 'device_id',
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'expire_at'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Get the identifier that will be stored in the subject claim of the JWT.
      *
-     * @var array
+     * @return mixed
      */
-    protected $hidden = [
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'phone_verified_at' => 'datetime',
-    ];
-
-    
-    public function getJWTIdentifier() {
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims() {
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
         return [];
+    }
+
+    public function rVerificationCodes() {
+        return $this->hasMany(VerifyCode::class, 'customer_id');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,58 +15,63 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        if (Auth::user()->role == 0) {
+            return redirect()->route('sellers');
+        } else {
+            return redirect()->route('verifyCodes');
+        }
+    } else {
+        return view('auth.login');
+    }
 });
 
-Auth::routes();
+Route::namespace('Auth')->group(function () {
+    Route::get('/login','LoginController@show_login_form')->name('login');
+    Route::post('/login','LoginController@process_login')->name('login_post');
+    Route::get('/register','LoginController@show_signup_form')->name('register');
+    Route::post('/register','LoginController@process_signup')->name('register_post');
+    Route::get('/logout','LoginController@logout')->name('logout');
+});
 
-Route::get('/admin', 'AdminController@index')->name('admin');
+Route::namespace('Manager')->group(function () {
+    Route::get('/sellers','ManageSellerController@index')->name('sellers');
+    Route::post('/sellers/block','ManageSellerController@blockSeller')->name('block_seller');
 
-// Seller
-Route::get('/sellers', 'ManageSellerController@index')->name('sellers');
-Route::post('/user/expand', 'ManageUserController@expandLicence')->name('expandLicence');
-Route::post('/user/block', 'ManageUserController@blockUser')->name('blockUser');
-Route::get('/newuser', 'AddUserController@index')->name('newuser');
-Route::post('/newuser', 'AddUserController@addNewUser');
+    Route::get('/customers','ManageCustomerController@index')->name('customers');
 
-// Customer
-Route::get('/users', 'ManageUserController@index')->name('users');
-Route::post('/user/expand', 'ManageUserController@expandLicence')->name('expandLicence');
-Route::post('/user/block', 'ManageUserController@blockUser')->name('blockUser');
-Route::get('/newuser', 'AddUserController@index')->name('newuser');
-Route::post('/newuser', 'AddUserController@addNewUser');
-
-// Device
-Route::get('/devices', 'ManageDeviceController@index')->name('devices');
-Route::get('/devices/{type}', 'ManageDeviceController@retrieveDeviceList')->name('devicesWithType');
-Route::get('/newdevice', 'AddDeviceController@index')->name('newdevice');
-Route::post('/newdevice', 'AddDeviceController@addNewDevice');
-
-// Device Type
-Route::get('/resources', 'ManageResourceController@index')->name('resources');
-Route::get('/resources/{typeId}', 'ManageResourceController@getResources')->name('getresources');
-Route::post('/type/add', 'ManageDeviceTypeController@addNewDeviceType')->name('addNewDeviceType');
-Route::post('/resource/upload', 'ManageResourceController@uploadResource')->name('uploadResource');
-Route::post('/resource/mile', 'ManageResourceController@uploadMileResource')->name('uploadResMile');
-Route::post('/resource/changbao', 'ManageResourceController@uploadChangbaoResource')->name('uploadChangbao');
-Route::post('/resource/update', 'ManageResourceController@updateResource')->name('updateResource');
+    Route::get('/apps','ManageAppController@index')->name('apps');
+    Route::post('/newapp', 'ManageAppController@addNewApp')->name('new_app');
+    Route::post('/apps/edit', 'ManageAppController@editApp')->name('edit_app');
+    Route::post('/apps/delete', 'ManageAppController@deleteApp')->name('delete_app');
 
 
-// App
-Route::get('/apps', 'ManageAppController@index')->name('apps');
-Route::get('/newapp', 'AddAppController@index')->name('newapp');
-Route::post('/newapp', 'AddAppController@addNewApp');
-Route::post('/app/update', 'ManageAppController@editApp')->name('updateApp');
-Route::post('/app/delete', 'ManageAppController@deleteApp')->name('deleteApp');
+    Route::get('/scripts', 'ManageScriptController@index')->name('scripts');
+    Route::post('/scripts/upload', 'ManageScriptController@uploadResource')->name('upload_scripts');
+    Route::post('/scripts/update', 'ManageScriptController@updateResource')->name('update_scripts');
+    
+    Route::get('/me/apps', 'ManageMyAppController@index')->name('myApps');
+    Route::post('/me/app/new', 'ManageMyAppController@addNewVersion')->name('addNewVersion');
 
-// My App
-Route::get('/me/apps', 'ManageMyAppController@index')->name('myApps');
-Route::post('/me/app/new', 'ManageMyAppController@addNewVersion')->name('addNewVersion');
+    // News
+    Route::get('/news', 'ManageNewsController@index')->name('news');
+    Route::post('/news/new', 'ManageNewsController@createNews')->name('addNews');
 
+    // Selling Status
+    Route::get('/sellings', 'ManageShellingStatusController@index')->name('sellings');
+    Route::get('/sellings/{type}', 'ManageShellingStatusController@showDetail')->name('selling_detail');
 
-// News
-Route::get('/news', 'ManageNewsController@index')->name('news');
-Route::post('/news/new', 'ManageNewsController@createNews')->name('addNews');
+});
 
-// Change Language
-Route::get('/language/{lang}', 'LanguagesController@set')->name('changeLanguage');
+Route::namespace('Seller')->group(function () {
+    // Generate Code
+    Route::get('/generation', 'GenerateCodeController@index')->name('verifyCodes');
+    Route::get('/generation/{type}', 'GenerateCodeController@getVerificationCode')->name('verifyCodesByType');
+    Route::post('/generation/code', 'GenerateCodeController@generateCode')->name('codeGenerate');
+
+    // Selling Status
+    Route::get('/seller/sellings', 'SellerSellingStatusController@index')->name('seller_sellings');
+
+    Route::get('books/download', 'GenerateCodeController@exportToExcel')->name('exportExcel');
+    // Route::get('/generation/{type}', 'SellerSellingStatusController@getVerificationCode')->name('verifyCodesByType');
+});

@@ -90,4 +90,16 @@ return [
     'title_our_app' => 'My App',
     'app_history' => 'Version History',
     'app_new_version' => 'New version',
+
+    // Verification Code Manage
+    'title_selling_status' => 'Selling Status',
+    'code_type' => 'Type',
+    'seven_days' => '7 Days',
+    'half_month' => '15 Days',
+    'one_month' => '30 Days',
+    'total_amount' => 'Total',
+    'selled_amount' => 'Selled',
+    'verification_code' => 'Code',
+    'created_at' => 'Creat Date',
+    'title_generate_code' => 'Generate Code',
 ];

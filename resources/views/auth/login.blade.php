@@ -1,70 +1,62 @@
-@extends('layouts.app')
+@extends('auth.authbase')
+
+@section('head')
+
+<style type="text/css">
+    .container {
+        max-width: 600px;
+    }
+</style>
+<script src="{{ asset('js/login.js') }}"></script>
+
+@endsection
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+            <div class="card-group">
+                <div class="card p-4" style="background-color: #2475C0;">
+                    <div class="card-body">
+                        <h1 style="color: #FDF600; text-align: center;">HERO</h1>
+                        <p class="text-muted" style="color: #FDF600 !important; text-align: center;">用户账号登录</p>
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: #FDF600 !important;">
+                                        <svg class="c-icon">
+                                            <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-user"></use>
+                                        </svg>
                                     </span>
-                                @enderror
+                                </div>
+                                <input class="form-control" type="text" placeholder="账号" name="username" required autofocus>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" style="background-color: #FDF600 !important;">
+                                        <svg class="c-icon">
+                                            <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-lock-locked"></use>
+                                        </svg>
                                     </span>
-                                @enderror
+                                </div>
+                                <input class="form-control" type="password" placeholder="密码" name="password" required>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
+                            <div class="form-group row">
+                                <div class="col-md-6 offset-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                                        <label class="form-check-label" style="color: white;" for="remember">
+                                            记住密码
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
+                            <div style="display:flex;">
+                                <button class="btn btn-primary px-4" style="color: #FDF600 !important; margin:auto;" type="submit">登录</button>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
