@@ -19,7 +19,7 @@ Route::group(['prefix' => 'v1/auth'], function($router) {
 });
 
 Route::group(['prefix' => 'auth'], function($router) {
-    Route::post('check/permission', 'Api\\CustomerLoginController@checkPermission');
+    Route::get('check/permission', 'Api\\CustomerLoginController@checkPermission');
 });
 
 Route::group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'v1'], function($router) {
