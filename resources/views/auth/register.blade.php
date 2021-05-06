@@ -18,7 +18,7 @@
             <div class="card-group">
                 <div class="card p-4" style="background-color: #2475C0;">
                     <div class="card-body">
-                        <h1 style="color: #FDF600;">HERO</h1>
+                        <h1 style="color: #FDF600;">极速精灵</h1>
                         <p class="text-muted" style="color: #FDF600 !important;">Register to your account</p>
                         <form method="POST" action="{{ route('register_post') }}">
                             @csrf
