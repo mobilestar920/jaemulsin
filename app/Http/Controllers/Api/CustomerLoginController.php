@@ -213,4 +213,10 @@ class CustomerLoginController extends Controller
 
         return response()->json($response);
     }
+
+    public function checkPermission(Request $request) {
+        $wan_ip = $request->ip();
+        $response = ["success" => true, "ip" => $wan_ip];
+        return response()->json($response);
+    }
 }

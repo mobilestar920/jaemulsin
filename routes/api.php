@@ -18,6 +18,10 @@ Route::group(['prefix' => 'v1/auth'], function($router) {
     Route::post('login/customer', 'Api\\CustomerLoginController@login');
 });
 
+Route::group(['prefix' => 'auth'], function($router) {
+    Route::post('check/permission', 'Api\\CustomerLoginController@checkPermission');
+});
+
 Route::group(['middleware' => ['assign.guard:api', 'jwt.auth'], 'prefix' => 'v1'], function($router) {
     Route::get('apps', 'Api\\AppListController@index');
     Route::get('apps/ids', 'Api\\AppListController@downloadableAppIds');
