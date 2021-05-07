@@ -64,7 +64,7 @@
                                 <option value="0" selected>7日</option>
                                 <option value="1">15日</option>
                                 <option value="2">30日</option>
-                                <option value="2">永久</option>
+                                <option value="3">永久</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -87,12 +87,5 @@
 @section('javascript')
 
 <script type="text/javascript" src="{{ asset('js/seller/generation.js') }}"></script>
-<!-- <script type="text/javascript" src="{{ asset('js/datatable/pdfmake.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datatable/buttons.html5.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datatable/buttons.print.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datatable/jszip.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/datatable/vfs_fonts.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/jquery/dataTables.buttons.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/jquery/jquery_3.5.1.js') }}"></script> -->
 
 @endsection
